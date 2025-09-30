@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxuryStay - Premium Hotel Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/glider-js/1.7.8/glider.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/glider-js/1.7.8/glider.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#F97316',
+                        dark: '#1F2937',
+                        light: '#F3F4F6',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .hero {
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            transition: background-image 1s ease-in-out;
+        }
+
+        .hero-overlay {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .room-card {
+            transition: transform 0.3s ease;
+        }
+
+        .room-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .service-card {
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: scale(1.05);
+        }
+
+        .animate-bounce-slow {
+            animation: bounce 5s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(-5%);
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            }
+
+            50% {
+                transform: translateY(0);
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+        }
+
+        .cart-item {
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .booking-form {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-field:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+        }
+
+        /* Room slider styles */
+        .room-slider {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glider-contain {
+            width: 100%;
+            position: relative;
+        }
+
+        .glider-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .glider-dot {
+            background: #d1d5db;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .glider-dot.active {
+            background: #1E40AF;
+        }
+
+        /* Hero slider indicators */
+        .hero-slider-indicators {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .hero-slider-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hero-slider-indicator.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        /* Enhanced room section styles */
+        .room-scroll-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .room-scroll-content {
+            display: flex;
+            transition: transform 0.5s ease;
+            padding-bottom: 20px;
+        }
+
+        .room-scroll-item {
+            flex: 0 0 auto;
+            width: 100%;
+            padding: 0 15px;
+        }
+
+        @media (min-width: 640px) {
+            .room-scroll-item {
+                width: 50%;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .room-scroll-item {
+                width: 33.333%;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .room-scroll-item {
+                width: 25%;
+            }
+        }
+
+        .scroll-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-btn:hover {
+            background: white;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .scroll-btn.prev {
+            left: 10px;
+        }
+
+        .scroll-btn.next {
+            right: 10px;
+        }
+
+        .scroll-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .scroll-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 8px;
+        }
+
+        .scroll-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #d1d5db;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-indicator.active {
+            background: #1E40AF;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <a href="#" class="text-2xl font-bold text-primary">Luxury<span
+                            class="text-secondary">Stay</span></a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-dark hover:text-primary transition">Home</a>
+                    <a href="#rooms" class="text-dark hover:text-primary transition">Rooms</a>
+                    <a href="#services" class="text-dark hover:text-primary transition">Services</a>
+                    <a href="#about" class="text-dark hover:text-primary transition">About</a>
+                    <a href="#contact" class="text-dark hover:text-primary transition">Contact</a>
+                    <a href="#" class="flex items-center text-dark hover:text-primary transition" id="cart-btn">
+                        <i class="fas fa-shopping-cart mr-1"></i>
+                        <span>Cart</span>
+                        <span
+                            class="ml-1 bg-secondary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                            id="cart-count">0</span>
+                    </a>
+                    <a href="#"
+                        class="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition">Login</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button class="text-dark" id="mobile-menu-btn">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden bg-white shadow-lg" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#" class="block px-3 py-2 text-dark hover:text-primary transition">Home</a>
+                <a href="#rooms" class="block px-3 py-2 text-dark hover:text-primary transition">Rooms</a>
+                <a href="#services" class="block px-3 py-2 text-dark hover:text-primary transition">Services</a>
+                <a href="#about" class="block px-3 py-2 text-dark hover:text-primary transition">About</a>
+                <a href="#contact" class="block px-3 py-2 text-dark hover:text-primary transition">Contact</a>
+                <a href="#" class="flex items-center px-3 py-2 text-dark hover:text-primary transition"
+                    id="cart-btn-mobile">
+                    <i class="fas fa-shopping-cart mr-1"></i>
+                    <span>Cart</span>
+                    <span
+                        class="ml-1 bg-secondary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                        id="cart-count-mobile">0</span>
+                </a>
+                <a href="#"
+                    class="block bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition mt-2 text-center">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Slideshow -->
+    <section class="hero" id="hero-slider">
+        <div class="hero-overlay"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center hero-content">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl text-white font-bold mb-6">Experience Luxury Like Never Before
+            </h1>
+            <p class="text-xl text-white mb-10 max-w-3xl mx-auto">Discover our exquisite rooms and suites, designed to
+                provide the ultimate comfort and relaxation for your stay.</p>
+            <a href="#rooms"
+                class="bg-secondary text-white px-8 py-4 rounded-md text-lg font-semibold hover:bg-orange-600 transition inline-block animate-bounce-slow">Book
+                Now</a>
+        </div>
+
+        <!-- Hero Slider Indicators -->
+        <div class="hero-slider-indicators">
+            <div class="hero-slider-indicator active" data-slide="0"></div>
+            <div class="hero-slider-indicator" data-slide="1"></div>
+            <div class="hero-slider-indicator" data-slide="2"></div>
+        </div>
+    </section>
+
+    <!-- Booking Form -->
+    <section class="py-12 bg-gray-100 -mt-24 relative z-10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-xl booking-form p-6 shadow-lg">
+                <form class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Check-In</label>
+                        <input type="date" class="w-full p-3 border border-gray-300 rounded-md input-field">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Check-Out</label>
+                        <input type="date" class="w-full p-3 border border-gray-300 rounded-md input-field">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Guests</label>
+                        <select class="w-full p-3 border border-gray-300 rounded-md input-field">
+                            <option>1 Adult</option>
+                            <option>2 Adults</option>
+                            <option>2 Adults, 1 Child</option>
+                            <option>2 Adults, 2 Children</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button class="w-full bg-primary text-white p-3 rounded-md hover:bg-blue-800 transition">Check
+                            Availability</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rooms Section with Enhanced Scrolling -->
+    <section id="rooms" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Our Rooms & Suites</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Each of our rooms is designed to provide the perfect blend of comfort, style, and functionality.</p>
+            </div>
+
+            <div class="room-scroll-container">
+                <button class="scroll-btn prev" id="scroll-prev">
+                    <i class="fas fa-chevron-left text-primary"></i>
+                </button>
+                
+                <div class="room-scroll-content" id="room-scroll-content">
+                    <!-- Room 1 -->
+                    <div class="room-scroll-item">
+                        <div class="room-card bg-white rounded-xl overflow-hidden shadow-lg h-full">
+                            <div class="relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
+                                    alt="Deluxe Room"
+                                    class="w-full h-64 object-cover transition duration-500 transform hover:scale-110">
+                                <div class="absolute top-4 right-4 bg-secondary text-white px-3 py-1 rounded-full">
+                                    Rs.2000/night</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Deluxe Room</h3>
+                                <p class="text-gray-600 mb-4">Spacious and comfortable with a beautiful view of the city.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-user-friends text-primary mr-2"></i>
+                                        <span class="text-gray-600">2 Adults</span>
+                                    </div>
+                                    <button
+                                        class="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition add-to-cart"
+                                        data-room="Deluxe Room" data-price="2000">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Room 2 -->
+                    <div class="room-scroll-item">
+                        <div class="room-card bg-white rounded-xl overflow-hidden shadow-lg h-full">
+                            <div class="relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1582582621959-48d27397dc69?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
+                                    alt="Executive Suite"
+                                    class="w-full h-64 object-cover transition duration-500 transform hover:scale-110">
+                                <div class="absolute top-4 right-4 bg-secondary text-white px-3 py-1 rounded-full">
+                                    Rs.5000/night</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Executive Suite</h3>
+                                <p class="text-gray-600 mb-4">Luxurious suite with separate living area and premium amenities.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-user-friends text-primary mr-2"></i>
+                                        <span class="text-gray-600">3 Adults</span>
+                                    </div>
+                                    <button
+                                        class="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition add-to-cart"
+                                        data-room="Executive Suite" data-price="5000">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Room 3 -->
+                    <div class="room-scroll-item">
+                        <div class="room-card bg-white rounded-xl overflow-hidden shadow-lg h-full">
+                            <div class="relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
+                                    alt="Presidential Suite"
+                                    class="w-full h-64 object-cover transition duration-500 transform hover:scale-110">
+                                <div class="absolute top-4 right-4 bg-secondary text-white px-3 py-1 rounded-full">
+                                    Rs.7999/night</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Presidential Suite</h3>
+                                <p class="text-gray-600 mb-4">The ultimate in luxury with panoramic views and exclusive access.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-user-friends text-primary mr-2"></i>
+                                        <span class="text-gray-600">4 Adults</span>
+                                    </div>
+                                    <button
+                                        class="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition add-to-cart"
+                                        data-room="Presidential Suite" data-price="7999">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Room 4 -->
+                    <div class="room-scroll-item">
+                        <div class="room-card bg-white rounded-xl overflow-hidden shadow-lg h-full">
+                            <div class="relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
+                                    alt="Family Suite"
+                                    class="w-full h-64 object-cover transition duration-500 transform hover:scale-110">
+                                <div class="absolute top-4 right-4 bg-secondary text-white px-3 py-1 rounded-full">
+                                    Rs.10000/night</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Family Suite</h3>
+                                <p class="text-gray-600 mb-4">Perfect for families with separate rooms for parents and children.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-user-friends text-primary mr-2"></i>
+                                        <span class="text-gray-600">4 Adults, 2 Children</span>
+                                    </div>
+                                    <button
+                                        class="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition add-to-cart"
+                                        data-room="Family Suite" data-price="10000">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Room 5 -->
+                    <div class="room-scroll-item">
+                        <div class="room-card bg-white rounded-xl overflow-hidden shadow-lg h-full">
+                            <div class="relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
+                                    alt="Ocean View Room"
+                                    class="w-full h-64 object-cover transition duration-500 transform hover:scale-110">
+                                <div class="absolute top-4 right-4 bg-secondary text-white px-3 py-1 rounded-full">
+                                    Rs.15000/night</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Ocean View Room</h3>
+                                <p class="text-gray-600 mb-4">Beautiful room with stunning views of the ocean and private balcony.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-user-friends text-primary mr-2"></i>
+                                        <span class="text-gray-600">2 Adults</span>
+                                    </div>
+                                    <button
+                                        class="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition add-to-cart"
+                                        data-room="Ocean View Room" data-price="15000">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Room 6 -->
+                    <div class="room-scroll-item">
+                        <div class="room-card bg-white rounded-xl overflow-hidden shadow-lg h-full">
+                            <div class="relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
+                                    alt="Honeymoon Suite"
+                                    class="w-full h-64 object-cover transition duration-500 transform hover:scale-110">
+                                <div class="absolute top-4 right-4 bg-secondary text-white px-3 py-1 rounded-full">
+                                    Rs.12000/night</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Honeymoon Suite</h3>
+                                <p class="text-gray-600 mb-4">Romantic suite with special amenities for newlyweds.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-user-friends text-primary mr-2"></i>
+                                        <span class="text-gray-600">2 Adults</span>
+                                    </div>
+                                    <button
+                                        class="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition add-to-cart"
+                                        data-room="Honeymoon Suite" data-price="12000">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="scroll-btn next" id="scroll-next">
+                    <i class="fas fa-chevron-right text-primary"></i>
+                </button>
+                
+                <div class="scroll-indicators" id="scroll-indicators">
+                    <!-- Indicators will be generated dynamically -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Our Services</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">We offer a wide range of services to make your stay as
+                    comfortable and enjoyable as possible.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="service-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-utensils text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-2">Fine Dining</h3>
+                    <p class="text-gray-600">Enjoy exquisite cuisine prepared by our world-class chefs.</p>
+                </div>
+
+                <div class="service-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-spa text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-2">Spa & Wellness</h3>
+                    <p class="text-gray-600">Relax and rejuvenate with our premium spa treatments.</p>
+                </div>
+
+                <div class="service-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-swimming-pool text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-2">Pool Access</h3>
+                    <p class="text-gray-600">Take a dip in our infinity pool with stunning views.</p>
+                </div>
+
+                <div class="service-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-concierge-bell text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-2">24/7 Concierge</h3>
+                    <p class="text-gray-600">Our concierge team is always available to assist you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-dark mb-6">About LuxuryStay</h2>
+                    <p class="text-gray-600 mb-4">Founded in 2005, LuxuryStay has been providing exceptional hospitality
+                        experiences to travelers from around the world. Our mission is to create memorable stays by
+                        paying attention to every detail.</p>
+                    <p class="text-gray-600 mb-6">We pride ourselves on our sustainable practices and commitment to
+                        supporting local communities. Our staff is trained to provide personalized service that exceeds
+                        expectations.</p>
+                    <div class="flex space-x-4">
+                        <div class="bg-primary text-white px-6 py-3 rounded-md">120+ Rooms</div>
+                        <div class="bg-secondary text-white px-6 py-3 rounded-md">5 Star Rating</div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=500&q=80"
+                        alt="Hotel Lobby" class="rounded-xl shadow-lg">
+                    <div class="absolute -bottom-6 -left-6 bg-primary text-white p-6 rounded-xl shadow-lg">
+                        <p class="text-3xl font-bold">15+</p>
+                        <p>Years of Experience</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Contact Us</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Have questions or need assistance? Our team is here to help
+                    you.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <form class="bg-white p-8 rounded-xl shadow-md">
+                        <div class="mb-6">
+                            <label class="block text-gray-700 mb-2" for="name">Full Name</label>
+                            <input type="text" id="name"
+                                class="w-full p-3 border border-gray-300 rounded-md input-field"
+                                placeholder="Your Name">
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 mb-2" for="email">Email Address</label>
+                            <input type="email" id="email"
+                                class="w-full p-3 border border-gray-300 rounded-md input-field"
+                                placeholder="Your Email">
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 mb-2" for="message">Message</label>
+                            <textarea id="message" rows="5"
+                                class="w-full p-3 border border-gray-300 rounded-md input-field"
+                                placeholder="Your Message"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-primary text-white p-3 rounded-md hover:bg-blue-800 transition">Send
+                            Message</button>
+                    </form>
+                </div>
+
+                <div>
+                    <div class="bg-white p-8 rounded-xl shadow-md h-full">
+                        <h3 class="text-xl font-bold text-dark mb-6">Get in Touch</h3>
+                        <div class="flex items-start mb-6">
+                            <div
+                                class="w-10 h-10 bg-primary rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-map-marker-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark">Address</h4>
+                                <p class="text-gray-600">123 Luxury Avenue, City, India</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start mb-6">
+                            <div
+                                class="w-10 h-10 bg-primary rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-phone-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark">Phone</h4>
+                                <p class="text-gray-600">+91 (--677866--)</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start mb-6">
+                            <div
+                                class="w-10 h-10 bg-primary rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark">Email</h4>
+                                <p class="text-gray-600">info@luxurystay.com</p>
+                            </div>
+                        </div>
+                        <div class="mt-10">
+                            <h4 class="font-bold text-dark mb-4">Follow Us</h4>
+                            <div class="flex space-x-4">
+                                <a href="#"
+                                    class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white hover:bg-blue-800 transition">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#"
+                                    class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white hover:bg-blue-800 transition">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#"
+                                    class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white hover:bg-blue-800 transition">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#"
+                                    class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white hover:bg-blue-800 transition">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">LuxuryStay</h3>
+                    <p class="text-gray-400">Providing exceptional hospitality experiences with attention to every
+                        detail.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Home</a></li>
+                        <li><a href="#rooms" class="text-gray-400 hover:text-white transition">Rooms</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition">Services</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition">About</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact Info</h3>
+                    <p class="text-gray-400 mb-2">123 Luxury Avenue, City, India</p>
+                    <p class="text-gray-400 mb-2">+91 456-78906---</p>
+                    <p class="text-gray-400">info@luxurystay.com</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Newsletter</h3>
+                    <p class="text-gray-400 mb-4">Subscribe to our newsletter for special offers</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Your Email" class="px-4 py-2 rounded-l-md w-full">
+                        <button
+                            class="bg-secondary px-4 py-2 rounded-r-md hover:bg-orange-600 transition">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 LuxuryStay. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar"
+        class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-dark">Your Cart</h2>
+                <button id="close-cart" class="text-gray-500 hover:text-dark">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+
+            <div id="cart-items" class="mb-8">
+                <!-- Cart items will be added here dynamically -->
+                <p class="text-gray-500 text-center py-4" id="empty-cart-message">Your cart is empty</p>
+            </div>
+
+            <div class="border-t border-gray-200 pt-4 mb-6">
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">Subtotal</span>
+                    <span class="font-semibold" id="cart-subtotal">Rs.0</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-600">Tax (10%)</span>
+                    <span class="font-semibold" id="cart-tax">Rs.0</span>
+                </div>
+                <div class="flex justify-between text-lg font-bold">
+                    <span>Total</span>
+                    <span id="cart-total">Rs.0</span>
+                </div>
+            </div>
+
+            <button id="checkout-btn"
+                class="w-full bg-primary text-white py-3 rounded-md hover:bg-blue-800 transition mb-4">Proceed to
+                Checkout</button>
+            <button id="continue-shopping"
+                class="w-full border border-gray-300 text-dark py-3 rounded-md hover:bg-gray-100 transition">Continue
+                Shopping</button>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Cart Functionality
+        const cartBtn = document.getElementById('cart-btn');
+        const cartBtnMobile = document.getElementById('cart-btn-mobile');
+        const closeCart = document.getElementById('close-cart');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const overlay = document.getElementById('overlay');
+        const continueShopping = document.getElementById('continue-shopping');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
+        const cartCount = document.getElementById('cart-count');
+        const cartCountMobile = document.getElementById('cart-count-mobile');
+        const subtotalEl = document.getElementById('cart-subtotal');
+        const taxEl = document.getElementById('cart-tax');
+        const totalEl = document.getElementById('cart-total');
+
+        let cart = [];
+
+        function openCart() {
+            cartSidebar.classList.remove('translate-x-full');
+            overlay.classList.remove('hidden');
+        }
+
+        function closeCartSidebar() {
+            cartSidebar.classList.add('translate-x-full');
+            overlay.classList.add('hidden');
+        }
+
+        cartBtn.addEventListener('click', openCart);
+        cartBtnMobile.addEventListener('click', openCart);
+        closeCart.addEventListener('click', closeCartSidebar);
+        overlay.addEventListener('click', closeCartSidebar);
+        continueShopping.addEventListener('click', closeCartSidebar);
+
+        // Add to cart buttons
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const room = btn.dataset.room;
+                const price = parseFloat(btn.dataset.price);
+
+                cart.push({ room, price });
+                updateCart();
+                openCart();
+            });
+        });
+
+        function updateCart() {
+            cartItemsContainer.innerHTML = '';
+            if (cart.length === 0) {
+                emptyCartMessage.classList.remove('hidden');
+            } else {
+                emptyCartMessage.classList.add('hidden');
+                cart.forEach((item, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'cart-item flex justify-between items-center py-3 border-b';
+                    div.innerHTML = `
+                    <div>
+                        <h4 class="font-semibold">${item.room}</h4>
+                        <p class="text-gray-500">Rs.${item.price}/night</p>
+                    </div>
+                    <button class="text-red-500 hover:text-red-700" onclick="removeFromCart(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                    cartItemsContainer.appendChild(div);
+                });
+            }
+
+            // Update totals
+            const subtotal = cart.reduce((acc, item) => acc + item.price, 0);
+            const tax = subtotal * 0.10;
+            const total = subtotal + tax;
+
+            subtotalEl.textContent = `Rs.${subtotal.toFixed(2)}`;
+            taxEl.textContent = `Rs.${tax.toFixed(2)}`;
+            totalEl.textContent = `Rs.${total.toFixed(2)}`;
+
+            // Update counts
+            cartCount.textContent = cart.length;
+            cartCountMobile.textContent = cart.length;
+        }
+
+        window.removeFromCart = function (index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        checkoutBtn.addEventListener('click', () => {
+            alert('Proceeding to checkout...');
+        });
+
+        // ==============================
+        // Hero Background Slider
+        // ==============================
+        const hero = document.getElementById('hero-slider');
+        const heroIndicators = document.querySelectorAll('.hero-slider-indicator');
+        const heroImages = [
+            'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1500&q=80',
+            'https://images.unsplash.com/photo-1495365200479-c4ed1d35e1aa?w=500&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=500&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1500&q=80'
+        ];
+        let currentHeroIndex = 0;
+
+        function changeHero(index) {
+            currentHeroIndex = index;
+            hero.style.backgroundImage = `url('${heroImages[index]}')`;
+            heroIndicators.forEach(dot => dot.classList.remove('active'));
+            heroIndicators[index].classList.add('active');
+        }
+
+        heroIndicators.forEach(indicator => {
+            indicator.addEventListener('click', () => {
+                const slide = parseInt(indicator.dataset.slide);
+                changeHero(slide);
+            });
+        });
+
+        setInterval(() => {
+            currentHeroIndex = (currentHeroIndex + 1) % heroImages.length;
+            changeHero(currentHeroIndex);
+        }, 5000);
+
+        changeHero(0);
+
+        // ==============================
+        // Enhanced Room Scrolling
+        // ==============================
+        const roomScrollContent = document.getElementById('room-scroll-content');
+        const scrollPrev = document.getElementById('scroll-prev');
+        const scrollNext = document.getElementById('scroll-next');
+        const scrollIndicators = document.getElementById('scroll-indicators');
+        const roomItems = document.querySelectorAll('.room-scroll-item');
+        
+        let currentScrollIndex = 0;
+        let itemsPerView = 1;
+        
+        // Calculate items per view based on screen size
+        function calculateItemsPerView() {
+            if (window.innerWidth >= 1024) {
+                return 4;
+            } else if (window.innerWidth >= 768) {
+                return 3;
+            } else if (window.innerWidth >= 640) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }
+        
+        // Update scroll position
+        function updateScrollPosition() {
+            const itemWidth = roomItems[0].offsetWidth;
+            const gap = 30; // 15px padding on each side
+            const scrollAmount = (itemWidth + gap) * itemsPerView;
+            roomScrollContent.style.transform = `translateX(-${currentScrollIndex * scrollAmount}px)`;
+            updateScrollIndicators();
+            updateScrollButtons();
+        }
+        
+        // Update scroll indicators
+        function updateScrollIndicators() {
+            const totalItems = roomItems.length;
+            const totalPages = Math.ceil(totalItems / itemsPerView);
+            
+            scrollIndicators.innerHTML = '';
+            
+            for (let i = 0; i < totalPages; i++) {
+                const indicator = document.createElement('div');
+                indicator.className = 'scroll-indicator';
+                if (i === currentScrollIndex) {
+                    indicator.classList.add('active');
+                }
+                indicator.addEventListener('click', () => {
+                    currentScrollIndex = i;
+                    updateScrollPosition();
+                });
+                scrollIndicators.appendChild(indicator);
+            }
+        }
+        
+        // Update scroll buttons state
+        function updateScrollButtons() {
+            const totalItems = roomItems.length;
+            const totalPages = Math.ceil(totalItems / itemsPerView);
+            
+            scrollPrev.disabled = currentScrollIndex === 0;
+            scrollNext.disabled = currentScrollIndex >= totalPages - 1;
+        }
+        
+        // Initialize room scrolling
+        function initRoomScrolling() {
+            itemsPerView = calculateItemsPerView();
+            updateScrollPosition();
+            
+            scrollPrev.addEventListener('click', () => {
+                if (currentScrollIndex > 0) {
+                    currentScrollIndex--;
+                    updateScrollPosition();
+                }
+            });
+            
+            scrollNext.addEventListener('click', () => {
+                const totalItems = roomItems.length;
+                const totalPages = Math.ceil(totalItems / itemsPerView);
+                
+                if (currentScrollIndex < totalPages - 1) {
+                    currentScrollIndex++;
+                    updateScrollPosition();
+                }
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                itemsPerView = calculateItemsPerView();
+                currentScrollIndex = 0; // Reset to first page on resize
+                updateScrollPosition();
+            });
+        }
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initRoomScrolling);
+    </script>
+</body>
+
+</html>
